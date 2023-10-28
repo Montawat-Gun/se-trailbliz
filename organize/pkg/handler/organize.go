@@ -16,4 +16,7 @@ func NewOrganizeRouter(router *gin.RouterGroup) {
 	router.POST("", service.Create)
 	router.PUT(":id", service.Update)
 	router.DELETE(":id", service.Delete)
+
+	router.POST("/applyOrganize/:organizeId", service.ApplyOrganize)
+	router.POST("/endOrganize", service.EndOrganize)
 }

@@ -15,8 +15,11 @@ type OrganizeRepository interface {
 	GetAll() ([]model.Organize, error)
 	Get(id uint) (model.Organize, error)
 	Create(organize *model.Organize) (model.Organize, error)
-	Update(id uint, organizeUpdate *model.OrganizeUpdate) (model.Organize, error)
+	Update(id uint, organizeUpdate *OrganizeUpdate) (model.Organize, error)
 	Delete(id uint) error
+
+	ApplyOrganize(organizeId uint, userOrganize *model.UserOrganize) (model.UserOrganize, error)
+	EndOrganize() error
 }
 
 func NewRepository() *SqlRepository {
@@ -42,7 +45,7 @@ func (r *SqlRepository) Create(organize *model.Organize) (model.Organize, error)
 	return *organize, result.Error
 }
 
-func (r *SqlRepository) Update(id uint, organizeUpdate *model.OrganizeUpdate) (model.Organize, error) {
+func (r *SqlRepository) Update(id uint, organizeUpdate *OrganizeUpdate) (model.Organize, error) {
 	var organize model.Organize
 	if err := r.Db.Where("id = ?", id).First(&organize).Error; err != nil {
 		return organize, err
@@ -60,4 +63,20 @@ func (r *SqlRepository) Delete(id uint) error {
 	}
 	err := r.Db.Delete(&organize).Error
 	return err
+}
+
+func (r *SqlRepository) ApplyOrganize(organizeId uint, userOrganize *model.UserOrganize) (model.UserOrganize, error) {
+	var organize model.Organize
+	if result := r.Db.Where("id = ?", organizeId).First(&organize); result.Error != nil {
+		return *userOrganize, result.Error
+	}
+	userOrganize.Organize = organize
+	if result := r.Db.Create(&userOrganize); result.Error != nil {
+		return *userOrganize, result.Error
+	}
+	return *userOrganize, nil
+}
+
+func (r *SqlRepository) EndOrganize() error {
+	return nil
 }

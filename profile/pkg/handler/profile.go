@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"trailbliz/profile/pkg/messaging"
 	"trailbliz/profile/pkg/profile"
 
 	"github.com/gin-gonic/gin"
@@ -16,4 +17,6 @@ func NewProfileRouter(router *gin.RouterGroup) {
 	router.POST("", service.Create)
 	router.PUT(":id", service.Update)
 	router.DELETE(":id", service.Delete)
+
+	go messaging.Subscribe("certificate", service)
 }

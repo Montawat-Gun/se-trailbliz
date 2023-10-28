@@ -1,6 +1,8 @@
 package profile
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"strconv"
 	"trailbliz/profile/pkg/database/model"
@@ -13,11 +15,17 @@ type Service struct {
 }
 
 type ProfileService interface {
+	Process(ctx context.Context, message []byte) error
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+}
+
+func (s *Service) Process(ctx context.Context, message []byte) error {
+	fmt.Printf("Process: %s", message)
+	return nil
 }
 
 func (s *Service) GetAll(c *gin.Context) {

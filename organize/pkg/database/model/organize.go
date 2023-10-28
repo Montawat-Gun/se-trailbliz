@@ -8,28 +8,25 @@ import (
 
 type Organize struct {
 	Id          uint           `json:"id" gorm:"primaryKey"`
-	Name        string         `json:"name"`
-	Description string         `json:"description"`
-	Capability  int            `json:"capability"`
-	DistanceKm  int            `json:"distanceKm"`
-	Fee         float32        `json:"fee"`
-	StartDate   time.Time      `json:"startDate"`
-	EndDate     time.Time      `json:"endDate"`
-	Lat         float32        `json:"lat"`
-	Lng         float32        `json:"lng"`
+	Name        string         `json:"name" gorm:"not null"`
+	Description *string        `json:"description"`
+	Capability  int            `json:"capability" gorm:"not null"`
+	DistanceKm  int            `json:"distanceKm" gorm:"not null"`
+	Fee         float32        `json:"fee" gorm:"not null"`
+	StartDate   time.Time      `json:"startDate" gorm:"not null"`
+	EndDate     time.Time      `json:"endDate" gorm:"not null"`
+	Lat         *float32       `json:"lat"`
+	Lng         *float32       `json:"lng"`
+	Reward      *string        `json:"reward"`
 	CreatedAt   time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt   time.Time      `gorm:"autoUpdateTime:milli"`
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
 
-type OrganizeUpdate struct {
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Capability  int       `json:"capability"`
-	DistanceKm  int       `json:"distanceKm"`
-	Fee         float32   `json:"fee"`
-	StartDate   time.Time `json:"startDate"`
-	EndDate     time.Time `json:"endDate"`
-	Lat         float32   `json:"lat"`
-	Lng         float32   `json:"lng"`
+type UserOrganize struct {
+	Id       uint     `json:"id" gorm:"primaryKey"`
+	UserId   string   `json:"userId" gorm:"not null"`
+	UserName string   `json:"userName" gorm:"not null"`
+	UserType string   `json:"userType" gorm:"not null"`
+	Organize Organize `gorm:"foreignKey:Id"`
 }

@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"strconv"
 	"trailbliz/organize/pkg/database/model"
+	"trailbliz/organize/pkg/messaging"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type Service struct {
@@ -19,6 +21,9 @@ type OrganizeService interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
+
+	ApplyOrganize(c *gin.Context)
+	EndOrganize(c *gin.Context)
 }
 
 func (s *Service) GetAll(c *gin.Context) {
@@ -56,7 +61,7 @@ func (s *Service) Create(c *gin.Context) {
 }
 
 func (s *Service) Update(c *gin.Context) {
-	var organizeUpdate model.OrganizeUpdate
+	var organizeUpdate OrganizeUpdate
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
@@ -84,5 +89,37 @@ func (s *Service) Delete(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
 		return
 	}
+	c.JSON(http.StatusOK, gin.H{"data": "success"})
+}
+
+func (s *Service) ApplyOrganize(c *gin.Context) {
+	var newUserOrganize model.UserOrganize
+	organizeId, err := strconv.ParseUint(c.Param("organizeId"), 10, 64)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
+		return
+	}
+	c.BindJSON(&newUserOrganize)
+	_, err = s.OrganizeRepository.ApplyOrganize(uint(organizeId), &newUserOrganize)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
+		return
+	}
+	// c.JSON(http.StatusOK, gin.H{"data": result})
+}
+
+func (s *Service) EndOrganize(c *gin.Context) {
+	id, err := uuid.NewUUID()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": string(err.Error())})
+		return
+	}
+	message := messaging.MessageEvent{
+		Id:   id,
+		Data: map[string]string{"Test": "Hello"},
+	}
+	messaging.Publish(message)
 	c.JSON(http.StatusOK, gin.H{"data": "success"})
 }

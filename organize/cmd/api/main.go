@@ -22,4 +22,6 @@ func main() {
 	if err := s.ListenAndServe(); err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
+
+	log.Println("server starting listen and serve on localhost:5003")
 }
