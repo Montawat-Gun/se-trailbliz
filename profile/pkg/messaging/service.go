@@ -65,7 +65,9 @@ func Subscribe(routingKey string, p MessageProcessor) {
 	var forever chan struct{}
 	go func() {
 		for d := range msgs {
-			p.Process(context.Background(), d.Body)
+			if err := p.Process(context.Background(), d.Body); err != nil {
+				log.Fatal(err)
+			}
 		}
 	}()
 	<-forever

@@ -1,6 +1,8 @@
 package messaging
 
-import "context"
+import (
+	"context"
+)
 
 type MessageProcessor interface {
 	Process(context.Context, []byte) error

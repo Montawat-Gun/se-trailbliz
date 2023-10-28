@@ -93,32 +93,36 @@ func (s *Service) Delete(c *gin.Context) {
 }
 
 func (s *Service) ApplyOrganize(c *gin.Context) {
-	var newUserOrganize model.UserOrganize
-	organizeId, err := strconv.ParseUint(c.Param("organizeId"), 10, 64)
+	var newUserOrganize UserOrganizeCreate
+	if err := c.BindJSON(&newUserOrganize); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
+	}
+	result, err := s.OrganizeRepository.ApplyOrganize(&newUserOrganize)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
 		return
 	}
-	c.BindJSON(&newUserOrganize)
-	_, err = s.OrganizeRepository.ApplyOrganize(uint(organizeId), &newUserOrganize)
-	if err != nil {
-		fmt.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
-		return
-	}
-	// c.JSON(http.StatusOK, gin.H{"data": result})
+	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
 func (s *Service) EndOrganize(c *gin.Context) {
+	var endOrganizeModel EndOrganizeModel
+	if err := c.BindJSON(&endOrganizeModel); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
+	}
 	id, err := uuid.NewUUID()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": string(err.Error())})
+		return
+	}
+	organize, err := s.OrganizeRepository.Get(endOrganizeModel.OrganizeId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": string(err.Error())})
 		return
 	}
 	message := messaging.MessageEvent{
 		Id:   id,
-		Data: map[string]string{"Test": "Hello"},
+		Data: organize,
 	}
 	messaging.Publish(message)
 	c.JSON(http.StatusOK, gin.H{"data": "success"})

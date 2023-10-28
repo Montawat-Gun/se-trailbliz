@@ -20,7 +20,7 @@ type Profile struct {
 	UpdatedAt time.Time      `gorm:"autoUpdateTime:milli"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
-	Certificates []*Reward `gorm:"foreignKey:UserId"`
+	Rewards []*Reward `gorm:"foreignKey:UserId"`
 }
 
 type ProfileUpdate struct {
@@ -31,5 +31,5 @@ type Reward struct {
 	Name         string     `json:"name" gorm:"not null"`
 	UserId       uint       `json:"userId" gorm:"not null"`
 	Type         string     `json:"type" gorm:"not null"`
-	ReceivedDate *time.Time `json:"receivedDate"`
+	ReceivedDate *time.Time `json:"receivedDate" gorm:"autoUpdateTime:milli"`
 }

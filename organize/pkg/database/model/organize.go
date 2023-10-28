@@ -21,12 +21,14 @@ type Organize struct {
 	CreatedAt   time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt   time.Time      `gorm:"autoUpdateTime:milli"`
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
+
+	UsersOrganize []*UserOrganize `gorm:"foreignKey:OrganizeId"`
 }
 
 type UserOrganize struct {
-	Id       uint     `json:"id" gorm:"primaryKey"`
-	UserId   string   `json:"userId" gorm:"not null"`
-	UserName string   `json:"userName" gorm:"not null"`
-	UserType string   `json:"userType" gorm:"not null"`
-	Organize Organize `gorm:"foreignKey:Id"`
+	Id         uint   `json:"id" gorm:"primaryKey"`
+	UserId     uint   `json:"userId" gorm:"not null"`
+	UserName   string `json:"userName" gorm:"not null"`
+	UserType   string `json:"userType" gorm:"not null"`
+	OrganizeId uint
 }

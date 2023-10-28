@@ -17,6 +17,7 @@ type ProfileRepository interface {
 	Create(Profile *model.Profile) (model.Profile, error)
 	Update(id uint, ProfileUpdate *model.ProfileUpdate) (model.Profile, error)
 	Delete(id uint) error
+	AddReward(newReward model.Reward) (model.Reward, error)
 }
 
 func NewRepository() *SqlRepository {
@@ -60,4 +61,9 @@ func (r *SqlRepository) Delete(id uint) error {
 	}
 	err := r.Db.Delete(&profile).Error
 	return err
+}
+
+func (r *SqlRepository) AddReward(newReward model.Reward) (model.Reward, error) {
+	result := r.Db.Create(&newReward)
+	return newReward, result.Error
 }

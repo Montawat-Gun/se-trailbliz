@@ -2,6 +2,7 @@ package profile
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -25,6 +26,20 @@ type ProfileService interface {
 
 func (s *Service) Process(ctx context.Context, message []byte) error {
 	fmt.Printf("Process: %s", message)
+	messageEvent := MessageEvent{}
+	if err := json.Unmarshal(message, &messageEvent); err != nil {
+		return err
+	}
+	for _, r := range messageEvent.Data.UsersOrganize {
+		reward := model.Reward{
+			Name:   *messageEvent.Data.Reward,
+			UserId: r.UserId,
+			Type:   "Certificate",
+		}
+		if _, err := s.ProfileRepository.AddReward(reward); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

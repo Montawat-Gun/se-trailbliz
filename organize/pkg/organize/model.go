@@ -2,7 +2,6 @@ package organize
 
 import (
 	"time"
-	"trailbliz/organize/pkg/database/model"
 )
 
 type OrganizeUpdate struct {
@@ -19,8 +18,12 @@ type OrganizeUpdate struct {
 }
 
 type UserOrganizeCreate struct {
-	UserId   string         `json:"userId" gorm:"not null"`
-	UserName string         `json:"userName" gorm:"not null"`
-	UserType string         `json:"userType" gorm:"not null"`
-	Organize model.Organize `gorm:"foreignKey:Id"`
+	UserId     uint   `json:"userId"`
+	OrganizeId uint   `json:"organizeId"`
+	UserName   string `json:"userName"`
+	UserType   string `json:"userType"`
+}
+
+type EndOrganizeModel struct {
+	OrganizeId uint `json:"organizeId"`
 }
