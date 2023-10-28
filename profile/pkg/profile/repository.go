@@ -34,7 +34,7 @@ func (r *SqlRepository) GetAll() ([]model.Profile, error) {
 
 func (r *SqlRepository) Get(id uint) (model.Profile, error) {
 	var profile model.Profile
-	result := r.Db.Where("id = ?", id).First(&profile)
+	result := r.Db.Where("id = ?", id).Preload("Rewards").First(&profile)
 	return profile, result.Error
 }
 
