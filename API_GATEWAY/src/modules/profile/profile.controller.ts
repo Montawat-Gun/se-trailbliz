@@ -25,6 +25,15 @@ export class ProfileController {
     }
   }
 
+  @Get('getByUserIdRef/:id')
+  async getByUserIdRef(@Param('id') id: string) {
+    try {
+      return await this.profileService.get(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @Post()
   async create(@Body() profileDto: any) {
     try {

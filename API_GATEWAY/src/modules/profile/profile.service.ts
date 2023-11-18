@@ -23,6 +23,15 @@ export class ProfileService {
     }
   }
 
+  async getByUserIdRef(id: string): Promise<any> {
+    try {
+      const response = await axios.get(`${PROFILE_BASE_URL}/profile/getByUserIdRef/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(profileDto: any): Promise<any> {
     try {
       const response = await axios.post(`${PROFILE_BASE_URL}/profile`, profileDto);
