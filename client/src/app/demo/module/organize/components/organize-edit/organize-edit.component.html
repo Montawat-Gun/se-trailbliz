@@ -1,0 +1,37 @@
+<p-dialog header="สร้างงานวิ่ง" [(visible)]="isShowModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <form [formGroup]="organizeForm" class="p-fluid" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label htmlFor="name1">ชื่องาน</label>
+      <input pInputText id="name1" type="text" formControlName="name" />
+    </div>
+    <div class="field">
+      <label htmlFor="email1">รายละเอียด</label>
+      <input pInputText id="email1" type="text" formControlName="description" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">จำนวนผู้รับสมัคร</label>
+      <input pInputText id="age1" type="text" formControlName="capability" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">ระยะทาง</label>
+      <input pInputText id="age1" type="text" formControlName="distanceKm" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">ค่าธรรมเนียม</label>
+      <input pInputText id="age1" type="text" formControlName="fee" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">เวลาเริ่ม</label>
+      <input pInputText id="age1" type="text" formControlName="startDate" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">เวลาสิ้นสุด</label>
+      <input pInputText id="age1" type="text" formControlName="endDate" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">รางวัลที่จะได้รับ</label>
+      <input pInputText id="age1" type="text" formControlName="reward" />
+    </div>
+    <p-button [loading]="editLoading" label="เข้าร่วม"></p-button>
+  </form>
+</p-dialog>
