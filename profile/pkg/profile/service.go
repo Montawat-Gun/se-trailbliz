@@ -92,7 +92,7 @@ func (s *Service) Create(c *gin.Context) {
 }
 
 func (s *Service) Update(c *gin.Context) {
-	var profileUpdate model.ProfileUpdate
+	var profileUpdate ProfileUpdate
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})

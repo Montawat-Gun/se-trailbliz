@@ -16,7 +16,7 @@ type ProfileRepository interface {
 	Get(id uint) (model.Profile, error)
 	GetByUserIdRef(userId string) (model.Profile, error)
 	Create(Profile *model.Profile) (model.Profile, error)
-	Update(id uint, ProfileUpdate *model.ProfileUpdate) (model.Profile, error)
+	Update(id uint, ProfileUpdate *ProfileUpdate) (model.Profile, error)
 	Delete(id uint) error
 	AddReward(newReward model.Reward) (model.Reward, error)
 }
@@ -50,7 +50,7 @@ func (r *SqlRepository) Create(profile *model.Profile) (model.Profile, error) {
 	return *profile, result.Error
 }
 
-func (r *SqlRepository) Update(id uint, profileUpdate *model.ProfileUpdate) (model.Profile, error) {
+func (r *SqlRepository) Update(id uint, profileUpdate *ProfileUpdate) (model.Profile, error) {
 	var profile model.Profile
 	if err := r.Db.Where("id = ?", id).First(&profile).Error; err != nil {
 		return profile, err
