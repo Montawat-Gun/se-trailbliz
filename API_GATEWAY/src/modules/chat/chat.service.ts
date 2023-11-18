@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ClientGrpc, Client, Transport } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 import { join } from "path";
-import { ChatService, ChatId, ChatResponse, CreateNewChatRequest } from "./types/types";
+import { ChatService, ChatId, ChatResponse, CreateNewChatRequest, InsertDataToChatByIdRequest } from "./types/types";
 
 @Injectable()
 export class ChatServiceImpl implements OnModuleInit {
@@ -30,13 +30,13 @@ export class ChatServiceImpl implements OnModuleInit {
     return this.chatService.createNewChat(req);
   }
 
-  insertDataToChatById(req: any): Observable<ChatResponse> {
+  insertDataToChatById(body: InsertDataToChatByIdRequest): Observable<ChatResponse> {
     const mappedReq = {
-      id: req.id,
+      id: body.id,
       data: {
         timestamp: Date.now(),
-        message: req.data.data.message,
-        sender: req.data.data.sender,
+        message: body.data.message,
+        sender: body.data.sender
       },
     };
     return this.chatService.insertDataToChatById(mappedReq);
