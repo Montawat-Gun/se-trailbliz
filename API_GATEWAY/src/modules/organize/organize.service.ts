@@ -1,10 +1,15 @@
+import { CreateNewChatRequest } from './../chat/types/types';
 import { Injectable } from "@nestjs/common";
 import axios from "axios";
+import { ChatServiceImpl } from "../chat/chat.service";
 
 const ORGANIZE_BASE_URL = process.env.ORGANIZE_BASE_URL;
 
 @Injectable()
 export class OrganizeService {
+  
+  constructor(private chatService: ChatServiceImpl) {}
+
   async getAll(): Promise<any> {
     try {
       const response = await axios.get(`${ORGANIZE_BASE_URL}/organize`);
@@ -25,7 +30,11 @@ export class OrganizeService {
 
   async create(organizeDto: any): Promise<any> {
     try {
-      const response = await axios.post(`${ORGANIZE_BASE_URL}/organize`, organizeDto);
+      const data : CreateNewChatRequest = {data:[]}
+      const chatId = await this.chatService.createNewChat(data).toPromise();
+      organizeDto.chatId = chatId.id
+      console.log(organizeDto)
+      const response = await axios.post(`${ORGANIZE_BASE_URL}/organize`, organizeDto) ;
       return response.data;
     } catch (error) {
       throw error;
