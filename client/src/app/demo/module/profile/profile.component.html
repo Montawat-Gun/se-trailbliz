@@ -1,0 +1,37 @@
+<div class="card">
+  <form [formGroup]="profileForm" class="p-fluid" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label htmlFor="name1">ชื่อ</label>
+      <input pInputText id="name1" type="text" formControlName="firstName" />
+    </div>
+    <div class="field">
+      <label htmlFor="email1">นามสกุล</label>
+      <input pInputText id="email1" type="text" formControlName="lastName" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">วันเดือนปีเกิด</label>
+      <input pInputText id="age1" type="text" formControlName="birthDate" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">เพศ</label>
+      <input pInputText id="age1" type="text" formControlName="gender" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">ที่อยู่</label>
+      <input pInputText id="age1" type="text" formControlName="address" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">เบอร์โทร</label>
+      <input pInputText id="age1" type="text" formControlName="phone" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">email</label>
+      <input pInputText id="age1" type="text" formControlName="email" />
+    </div>
+    <div class="field">
+      <label htmlFor="age1">type</label>
+      <input pInputText id="age1" type="text" formControlName="type" />
+    </div>
+    <p-button [loading]="loading" label="ตกลง"></p-button>
+  </form>
+</div>
