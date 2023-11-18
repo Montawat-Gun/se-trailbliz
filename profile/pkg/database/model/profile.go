@@ -8,6 +8,7 @@ import (
 
 type Profile struct {
 	Id        uint           `json:"id" gorm:"primaryKey"`
+	UserIdRef string         `json:"userIdRef" gorm:"not null"`
 	FirstName string         `json:"firstName" gorm:"not null"`
 	LastName  string         `json:"lastName" gorm:"not null"`
 	BirthDate *time.Time     `json:"birthDate"`

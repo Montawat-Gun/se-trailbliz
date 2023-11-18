@@ -19,6 +19,7 @@ type ProfileService interface {
 	Process(ctx context.Context, message []byte) error
 	GetAll(c *gin.Context)
 	Get(c *gin.Context)
+	GetByUserIdRef(c *gin.Context)
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
@@ -58,6 +59,20 @@ func (s *Service) Get(c *gin.Context) {
 		return
 	}
 	result, err := s.ProfileRepository.Get(uint(id))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": result})
+}
+
+func (s *Service) GetByUserIdRef(c *gin.Context) {
+	userId := c.Param("userId")
+	if userId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "userId required"})
+		return
+	}
+	result, err := s.ProfileRepository.GetByUserIdRef(userId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": string(err.Error())})
 		return
