@@ -9,7 +9,7 @@
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-          <input formControlName="username" id="email1" type="text" placeholder="Email address" pInputText class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+          <input formControlName="email" id="email1" type="text" placeholder="Email address" pInputText class="w-full md:w-30rem mb-5" style="padding: 1rem" />
 
           <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
           <p-password formControlName="password" id="password1" placeholder="Password" [toggleMask]="true" [feedback]="false" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>

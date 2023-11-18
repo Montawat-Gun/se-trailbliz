@@ -30,7 +30,7 @@ export class RegisterComponent {
   onSubmit() {
     this.isLoading = true;
     const data = {
-      username: this.form.value.username,
+      email: this.form.value.username,
       password: this.form.value.password,
       userType: this.form.value.type.value ?? 'participant',
     };
