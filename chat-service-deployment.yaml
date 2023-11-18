@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: chat-service
+  name: chat-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: chat-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/termproject-default: "true"
+        io.kompose.service: chat-service
+    spec:
+      containers:
+        - env:
+            - name: MONGODB_CONNECTION_STRING
+              value: mongodb+srv://chain:1234@cluster0.z7ijqog.mongodb.net/
+          image: chainecs/chat-img
+          name: chat-service
+          ports:
+            - containerPort: 30043
+              hostPort: 30043
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

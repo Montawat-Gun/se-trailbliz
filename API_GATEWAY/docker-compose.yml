@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  api-db:
+    image: postgres:13
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: api
+
+  api-gateway:
+    image: chainecs/api-gateway-img:latest
+    ports:
+      - 3333:3333
+    depends_on:
+      - api-db
+    env_file:
+      - .env
+    command: /bin/sh -c "npx prisma migrate dev && yarn start"
+
+  chat:
+    depends_on:
+      - api-gateway
+    image: chainecs/chat-img:latest
+    ports:
+      - 30043:30043
+    environment:
+      - MONGODB_CONNECTION_STRING=mongodb+srv://chain:1234@cluster0.z7ijqog.mongodb.net/
+

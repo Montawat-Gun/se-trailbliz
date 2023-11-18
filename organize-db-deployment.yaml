@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: organize-db
+  name: organize-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: organize-db
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/termproject-default: "true"
+        io.kompose.service: organize-db
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: organizeDB
+            - name: POSTGRES_PASSWORD
+              value: "123"
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:13
+          name: organize-db
+          ports:
+            - containerPort: 5432
+              hostPort: 5433
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

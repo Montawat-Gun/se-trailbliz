@@ -3,6 +3,7 @@ package messaging
 import (
 	"context"
 	"log"
+	"os"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
@@ -14,7 +15,10 @@ func failOnError(err error, msg string) {
 }
 
 func Subscribe(routingKey string, p MessageProcessor) {
-	conn, err := amqp.Dial("amqp://admin:1234@localhost:5672/")
+	rabbitMQURL := os.Getenv("RABBITMQ_URL")
+	log.Printf("RabbitMQ URL: %s", rabbitMQURL)
+
+	conn, err := amqp.Dial(rabbitMQURL)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 

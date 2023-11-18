@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+service ChatService {
+    rpc GetChatById(ChatId) returns (ChatResponse) {}
+    rpc CreateNewChat(CreateNewChatRequest) returns (ChatResponse) {}
+    rpc InsertDataToChatById(InsertDataToChatByIdRequest) returns (ChatResponse) {}
+}
+
+message ChatId {
+    string id=1;
+}
+
+message Empty{}
+
+message CreateNewChatRequest {
+    repeated Data data = 1;
+}
+
+message InsertDataToChatByIdRequest {
+    string id = 1;
+    Data data = 2;
+}
+
+message ChatResponse {
+    string id = 1;
+    repeated Data data = 2;
+}
+
+message Data {
+    int32 timestamp = 1;
+    string sender = 2;
+    string message = 3;
+}
+
+
