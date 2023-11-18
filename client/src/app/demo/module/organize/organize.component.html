@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="flex justify-content-end">
+  <div *ngIf="type === 'host'" class="flex justify-content-end">
     <p-button label="เพิ่มงานวิ่ง" (click)="onShowAdd()"></p-button>
   </div>
   <div class="grid mt-3">

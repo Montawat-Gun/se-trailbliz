@@ -15,6 +15,7 @@ export class OrganizeComponent {
   @ViewChild(OrganizeEditComponent) organizeEditModal: OrganizeEditComponent;
   userId: number;
   organizes: IOrganize[] = [];
+  type: string;
 
   constructor(
     private organizeService: OrganizeService,
@@ -27,6 +28,7 @@ export class OrganizeComponent {
     this.init();
     this.profileService.getByUserIdRef().subscribe((res) => {
       this.userId = res.data.id;
+      this.type = res.data.type;
     });
   }
 

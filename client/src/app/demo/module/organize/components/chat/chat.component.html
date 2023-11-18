@@ -1,11 +1,17 @@
 <p-dialog header="แชทกลุ่ม" [(visible)]="isShowModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
   [resizable]="false">
-  <div class="card bg-indigo-100 w-3"></div>
+  <ng-container *ngFor="let chat of chats">
+    <div [class]="'w-full flex justify-content-' + (chat.sender === userId ? 'end' : 'start')">
+      <div [class]="'card bg-'+ (chat.sender === userId ? 'indigo' : 'pink') +'-100 w-3 mb-2 p-4'">
+        <span>{{chat.message}}</span>
+      </div>
+    </div>
+  </ng-container>
   <ng-template pTemplate="footer">
     <div class="flex">
-      <input formControlName="username" id="email1" type="text" placeholder="Type something..." pInputText
-        class="w-full" />
-      <p-button icon="pi pi-send" (click)="visible = false" label="Send" styleClass="p-button-text"></p-button>
+      <input [(ngModel)]="message" id="email1" type="text" placeholder="Type something..." pInputText class="w-full" />
+      <p-button icon="pi pi-send" (click)="visible = false" label="Send" styleClass="p-button-text"
+        (click)="send()"></p-button>
     </div>
   </ng-template>
 </p-dialog>

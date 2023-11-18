@@ -32,7 +32,7 @@ export class LoginComponent {
 
   onSubmit() {
     this.authService.login(this.loginForm.value).subscribe(_ => {
-      this.router.navigate(['']);
+      this.router.navigate(['profile']);
     });
   }
 }
