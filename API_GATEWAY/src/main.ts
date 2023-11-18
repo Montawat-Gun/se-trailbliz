@@ -6,11 +6,10 @@ require("dotenv").config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const options = {
-    "origin": "*",
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-    "preflightContinue": false,
-    "optionsSuccessStatus": 204,
-    "credentials":true
+    origin: "*", // Allow all origins
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
 }
   app.enableCors(options)
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
