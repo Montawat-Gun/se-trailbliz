@@ -26,10 +26,10 @@ export class ChatController {
     }
   }
 
-  @Post("data")
-  async insertDataToChatById(@Body() body: InsertDataToChatByIdRequest): Promise<ChatResponse> {
+  @Post(":userId/data")
+  async insertDataToChatById(@Param() params : any ,@Body() body: InsertDataToChatByIdRequest): Promise<ChatResponse> {
     try {
-      return await this.chatService.insertDataToChatById(body).toPromise();
+      return await this.chatService.insertDataToChatById(params.userId,body).toPromise();
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

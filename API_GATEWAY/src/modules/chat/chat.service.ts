@@ -30,13 +30,13 @@ export class ChatServiceImpl implements OnModuleInit {
     return this.chatService.createNewChat(req);
   }
 
-  insertDataToChatById(body: InsertDataToChatByIdRequest): Observable<ChatResponse> {
+  insertDataToChatById(userId:string,body: InsertDataToChatByIdRequest): Observable<ChatResponse> {
     const mappedReq = {
       id: body.id,
       data: {
         timestamp: Date.now(),
         message: body.data.message,
-        sender: body.data.sender
+        sender: userId
       },
     };
     return this.chatService.insertDataToChatById(mappedReq);
