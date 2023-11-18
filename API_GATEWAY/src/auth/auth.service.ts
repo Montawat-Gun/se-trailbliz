@@ -23,7 +23,7 @@ export class AuthService {
           userType: dto.userType
         },
       });
-      return this.signToken(user.id, user.email);
+      return this.signToken(user.id, user.email ,user.userType);
     } catch (error) {
       if (error.code === 'P2002') {
         throw new ForbiddenException('Credentials Taken');
@@ -40,16 +40,18 @@ export class AuthService {
     if (!user) throw new ForbiddenException('Credentials incorrect');
     const passwordMatches = await argon.verify(user.hash, dto.password);
     if (!passwordMatches) throw new ForbiddenException('Credentials incorrect');
-    return this.signToken(user.id, user.email);
+    return this.signToken(user.id, user.email ,user.userType);
   }
 
   async signToken(
     userId: number,
     email: string,
-  ): Promise<{ userId: number; email: string; access_token: string }> {
+    userType: string, 
+  ): Promise<{ userId: number; email: string; userType: string; access_token: string }> {
     const payload = {
       sub: userId,
       email,
+      userType, 
     };
     const secret = this.confing.get('JWT_SECRET');
     const token = await this.jwt.signAsync(payload, {
@@ -59,6 +61,7 @@ export class AuthService {
     return {
       userId,
       email,
+      userType, 
       access_token: token,
     };
   }
