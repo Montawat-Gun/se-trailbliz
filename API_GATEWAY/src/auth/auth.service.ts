@@ -46,12 +46,12 @@ export class AuthService {
   async signToken(
     userId: number,
     email: string,
-    userType: string, // Add userType as a parameter
+    userType: string, 
   ): Promise<{ userId: number; email: string; userType: string; access_token: string }> {
     const payload = {
       sub: userId,
       email,
-      userType, // Include userType in the payload
+      userType, 
     };
     const secret = this.confing.get('JWT_SECRET');
     const token = await this.jwt.signAsync(payload, {
@@ -61,7 +61,7 @@ export class AuthService {
     return {
       userId,
       email,
-      userType, // Return userType in the response
+      userType, 
       access_token: token,
     };
   }
