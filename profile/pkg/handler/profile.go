@@ -14,6 +14,7 @@ func NewProfileRouter(router *gin.RouterGroup) {
 	var service profile.ProfileService = s
 	router.GET("", service.GetAll)
 	router.GET(":id", service.Get)
+	router.GET("getByUserIdRef/:userId", service.GetByUserIdRef)
 	router.POST("", service.Create)
 	router.PUT(":id", service.Update)
 	router.DELETE(":id", service.Delete)

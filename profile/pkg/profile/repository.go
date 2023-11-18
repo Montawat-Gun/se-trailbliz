@@ -14,6 +14,7 @@ type SqlRepository struct {
 type ProfileRepository interface {
 	GetAll() ([]model.Profile, error)
 	Get(id uint) (model.Profile, error)
+	GetByUserIdRef(userId string) (model.Profile, error)
 	Create(Profile *model.Profile) (model.Profile, error)
 	Update(id uint, ProfileUpdate *model.ProfileUpdate) (model.Profile, error)
 	Delete(id uint) error
@@ -35,6 +36,12 @@ func (r *SqlRepository) GetAll() ([]model.Profile, error) {
 func (r *SqlRepository) Get(id uint) (model.Profile, error) {
 	var profile model.Profile
 	result := r.Db.Where("id = ?", id).Preload("Rewards").First(&profile)
+	return profile, result.Error
+}
+
+func (r *SqlRepository) GetByUserIdRef(userId string) (model.Profile, error) {
+	var profile model.Profile
+	result := r.Db.Where("user_id_ref = ?", userId).Preload("Rewards").First(&profile)
 	return profile, result.Error
 }
 
