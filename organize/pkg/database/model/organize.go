@@ -18,6 +18,7 @@ type Organize struct {
 	Lat            *float32       `json:"lat"`
 	Lng            *float32       `json:"lng"`
 	Reward         *string        `json:"reward"`
+	ChatId         *string        `json:"chatId"`
 	CreatedAt      time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt      time.Time      `gorm:"autoUpdateTime:milli"`
 	DeletedAt      gorm.DeletedAt `gorm:"index"`
