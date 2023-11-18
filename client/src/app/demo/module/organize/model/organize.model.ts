@@ -10,4 +10,13 @@ export interface IOrganize {
   lat: number;
   lng: number;
   reward: string;
+  createByUserId: number;
+  chatId: string;
+  UsersOrganize: {
+    id: number,
+    userId: number,
+    userName: string,
+    userType: string,
+    OrganizeId: number
+  }[]
 }

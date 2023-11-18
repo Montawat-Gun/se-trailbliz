@@ -4,6 +4,7 @@ import { IOrganize } from '../../model/organize.model';
 import { OrganizeService } from 'src/app/demo/service/organize.service';
 import { finalize } from 'rxjs';
 import { ProfileService } from 'src/app/demo/service/profile.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-organize-edit',
@@ -12,6 +13,7 @@ import { ProfileService } from 'src/app/demo/service/profile.service';
 })
 export class OrganizeEditComponent {
   @Output() submit = new EventEmitter<any>();
+  private id: number;
   isShowModal: boolean = false;
   editLoading: boolean = false;
 
@@ -27,10 +29,13 @@ export class OrganizeEditComponent {
     createByUserId: new FormControl(null, Validators.required),
   });
 
-  constructor(private orgService: OrganizeService, private profileService: ProfileService) { }
+  constructor(private orgService: OrganizeService, private profileService: ProfileService, private messageService: MessageService) { }
 
   toggle(value: boolean, org: IOrganize) {
-    this.organizeForm.patchValue(org);
+    if (org) {
+      this.id = org.id;
+      this.organizeForm.patchValue({ ...org, startDate: new Date(org.startDate), endDate: new Date(org.endDate) });
+    }
     this.isShowModal = value;
   }
 
@@ -38,12 +43,24 @@ export class OrganizeEditComponent {
     const userId = this.profileService.user.id;
     this.organizeForm.patchValue({ createByUserId: userId });
     this.editLoading = true;
-    this.orgService
-      .create(this.organizeForm.value)
-      .pipe(finalize(() => (this.editLoading = false)))
-      .subscribe((res) => {
-        this.submit.emit(res.data);
-        this.isShowModal = false;
-      });
+    if (this.id) {
+      this.orgService
+        .update(this.id, this.organizeForm.getRawValue())
+        .pipe(finalize(() => (this.editLoading = false)))
+        .subscribe((res) => {
+          this.submit.emit(res.data);
+          this.isShowModal = false;
+          this.messageService.add({ summary: "Success", severity: "success" });
+        });
+    } else {
+      this.orgService
+        .create(this.organizeForm.getRawValue())
+        .pipe(finalize(() => (this.editLoading = false)))
+        .subscribe((res) => {
+          this.submit.emit(res.data);
+          this.isShowModal = false;
+          this.messageService.add({ summary: "Success", severity: "success" });
+        });
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
+        return EMPTY;
         if (err.status === HttpStatusCode.Unauthorized) {
           this.router.navigate(['login'], {
             queryParams: {
@@ -45,7 +46,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             summary: 'เกิดข้อผิดพลาด',
           });
         }
-        return throwError(() => err.error);
+        // return throwError(() => err.error);
       })
     );
   }

@@ -32,10 +32,10 @@
       <label htmlFor="age1">รางวัลที่จะได้รับ</label>
       <input pInputText id="age1" type="text" formControlName="reward" />
     </div>
-    <div class="">
+    <div *ngIf="!isJoined" class="">
       <p-button [loading]="applyLoading" label="เข้าร่วม" (click)="onApply()"></p-button>
     </div>
-    <div class="my-3">
+    <div *ngIf="isJoined" class="my-3">
       <button pButton icon="pi pi-comments" class="p-button-secondary" label="Group chat" (click)="onOpenGroupChat()"></button>
     </div>
   </form>
