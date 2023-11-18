@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/demo/service/authentication.service';
 import { finalize, mergeMap } from 'rxjs';
 import { ChatComponent } from '../chat/chat.component';
+import { ProfileService } from 'src/app/demo/service/profile.service';
 
 @Component({
   selector: 'app-organize-detail',
@@ -32,28 +33,29 @@ export class OrganizeDetailComponent implements OnInit {
   constructor(
     route: ActivatedRoute,
     private organizeService: OrganizeService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private profileService: ProfileService,
   ) {
     this.id = Number(route.snapshot.paramMap.get('organizeId'));
   }
 
   ngOnInit(): void {
     this.organizeService.get(this.id).subscribe(res => {
-      this.organizeForm.patchValue(res);
+      this.organizeForm.patchValue(res.data);
     });
   }
 
   onApply() {
     this.applyLoading = true;
-    this.authService.user$
+    this.profileService.getByUserIdRef()
       .pipe(
         finalize(() => (this.applyLoading = false)),
         mergeMap(user => {
           const data = {
             organizeId: this.id,
-            userId: user.userId,
-            userName: user.userName,
-            userType: user.userType,
+            userId: user.data.id.toString(),
+            userName: user.data.email,
+            userType: user.data.type,
           };
           return this.organizeService.applyOrganize(data);
         })

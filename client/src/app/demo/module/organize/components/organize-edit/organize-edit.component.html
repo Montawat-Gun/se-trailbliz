@@ -1,4 +1,5 @@
-<p-dialog header="สร้างงานวิ่ง" [(visible)]="isShowModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+<p-dialog header="สร้างงานวิ่ง" [(visible)]="isShowModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+  [resizable]="false">
   <form [formGroup]="organizeForm" class="p-fluid" (ngSubmit)="onSubmit()">
     <div class="field">
       <label htmlFor="name1">ชื่องาน</label>
@@ -10,28 +11,28 @@
     </div>
     <div class="field">
       <label htmlFor="age1">จำนวนผู้รับสมัคร</label>
-      <input pInputText id="age1" type="text" formControlName="capability" />
+      <p-inputNumber inputId="integeronly" formControlName="capability"> </p-inputNumber>
     </div>
     <div class="field">
       <label htmlFor="age1">ระยะทาง</label>
-      <input pInputText id="age1" type="text" formControlName="distanceKm" />
+      <p-inputNumber inputId="integeronly" formControlName="distanceKm"> </p-inputNumber>
     </div>
     <div class="field">
       <label htmlFor="age1">ค่าธรรมเนียม</label>
-      <input pInputText id="age1" type="text" formControlName="fee" />
+      <p-inputNumber inputId="integeronly" formControlName="fee"> </p-inputNumber>
     </div>
     <div class="field">
       <label htmlFor="age1">เวลาเริ่ม</label>
-      <input pInputText id="age1" type="text" formControlName="startDate" />
+      <p-calendar appendTo="body" formControlName="startDate" ></p-calendar>
     </div>
     <div class="field">
       <label htmlFor="age1">เวลาสิ้นสุด</label>
-      <input pInputText id="age1" type="text" formControlName="endDate" />
+      <p-calendar appendTo="body" formControlName="endDate" ></p-calendar>
     </div>
     <div class="field">
       <label htmlFor="age1">รางวัลที่จะได้รับ</label>
       <input pInputText id="age1" type="text" formControlName="reward" />
     </div>
-    <p-button [loading]="editLoading" label="เข้าร่วม"></p-button>
+    <p-button type="submit" [loading]="editLoading" label="เข้าร่วม"></p-button>
   </form>
 </p-dialog>

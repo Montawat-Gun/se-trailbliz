@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { IUser } from '../model/user.model';
 import { mockUser } from '../model/mock';
 
@@ -18,7 +18,10 @@ export class AuthenticationService {
   }
 
   login(data: { username: string; password: string }) {
-    return this.http.post('/auth/signin', data);
+    return this.http.post('/auth/signin', data).pipe(tap((res: any) => {
+      localStorage.setItem('access_token', res.access_token);
+      localStorage.setItem('user_id', res.userId);
+    }));
   }
 
   register(data: any) {

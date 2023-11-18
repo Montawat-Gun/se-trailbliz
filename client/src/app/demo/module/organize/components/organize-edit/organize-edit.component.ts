@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IOrganize } from '../../model/organize.model';
 import { OrganizeService } from 'src/app/demo/service/organize.service';
 import { finalize } from 'rxjs';
+import { ProfileService } from 'src/app/demo/service/profile.service';
 
 @Component({
   selector: 'app-organize-edit',
@@ -10,6 +11,7 @@ import { finalize } from 'rxjs';
   styleUrls: ['./organize-edit.component.scss'],
 })
 export class OrganizeEditComponent {
+  @Output() submit = new EventEmitter<any>();
   isShowModal: boolean = false;
   editLoading: boolean = false;
 
@@ -22,9 +24,10 @@ export class OrganizeEditComponent {
     startDate: new FormControl('', Validators.required),
     endDate: new FormControl('', Validators.required),
     reward: new FormControl('', Validators.required),
+    createByUserId: new FormControl(null, Validators.required),
   });
 
-  constructor(private orgService: OrganizeService) {}
+  constructor(private orgService: OrganizeService, private profileService: ProfileService) { }
 
   toggle(value: boolean, org: IOrganize) {
     this.organizeForm.patchValue(org);
@@ -32,10 +35,15 @@ export class OrganizeEditComponent {
   }
 
   onSubmit() {
+    const userId = this.profileService.user.id;
+    this.organizeForm.patchValue({ createByUserId: userId });
     this.editLoading = true;
     this.orgService
       .create(this.organizeForm.value)
       .pipe(finalize(() => (this.editLoading = false)))
-      .subscribe();
+      .subscribe((res) => {
+        this.submit.emit(res.data);
+        this.isShowModal = false;
+      });
   }
 }

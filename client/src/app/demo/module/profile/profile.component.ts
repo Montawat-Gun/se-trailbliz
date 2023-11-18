@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProfileService } from '../../service/profile.service';
 import { AuthenticationService } from '../../service/authentication.service';
-import { mergeMap } from 'rxjs';
+import { finalize, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -29,17 +29,18 @@ export class ProfileComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private authService: AuthenticationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.authService.user$.pipe(
-      mergeMap(user => {
-        return this.profileService.getByUserIdRef(user.userId);
-      })
-    ).subscribe();
+    this.profileService.getByUserIdRef().subscribe((res: any) => {
+
+    });
   }
 
   onSubmit() {
-    console.log(this.profileForm.value);
+    this.loading = true;
+    this.profileService.create(this.profileForm.value).pipe(finalize(() => this.loading = false)).subscribe((res) => {
+      console.log(res);
+    })
   }
 }

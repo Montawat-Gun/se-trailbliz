@@ -12,8 +12,8 @@
             <span class="block text-500 font-medium my-1"><i class="pi pi-calendar mr-2"></i>{{ org.startDate | date: 'short' }}</span>
             <span class="block text-500 font-medium my-1"><i class="pi pi-users mr-2"></i>จำนวน {{ org.capability | number }} คน</span>
           </div>
-          <div class="flex align-items-center justify-content-center bg-blue-100 border-round cursor-pointer" [ngStyle]="{ width: '2.5rem', height: '2.5rem' }" (click)="gotoMap(org)">
-            <i class="pi pi-map-marker text-blue-500 text-xl"></i>
+          <div class="flex align-items-center justify-content-center bg-blue-100 border-round cursor-pointer" [ngStyle]="{ width: '2.5rem', height: '2.5rem' }" (click)="onEdit(org)">
+            <i class="pi pi-pencil text-blue-500 text-xl"></i>
           </div>
         </div>
         <span class="text-500 font-medium mr-2">รับ</span>
@@ -23,4 +23,4 @@
   </div>
 </div>
 
-<app-organize-edit></app-organize-edit>
+<app-organize-edit (submit)="init()"></app-organize-edit>

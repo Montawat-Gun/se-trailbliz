@@ -22,6 +22,6 @@ export class OrganizeService {
   }
 
   create(data: IOrganize) {
-    return this.http.post('/organize', data);
+    return this.http.post<SuccessResponse<IOrganize[]>>('/organize', data);
   }
 }

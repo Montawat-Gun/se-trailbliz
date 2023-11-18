@@ -3,6 +3,7 @@ import { OrganizeService } from '../../service/organize.service';
 import { IOrganize } from './model/organize.model';
 import { Router } from '@angular/router';
 import { OrganizeEditComponent } from './components/organize-edit/organize-edit.component';
+import { ProfileService } from '../../service/profile.service';
 
 @Component({
   selector: 'app-organize',
@@ -16,17 +17,23 @@ export class OrganizeComponent {
 
   constructor(
     private organizeService: OrganizeService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private profileService: ProfileService,
+  ) { }
 
   ngOnInit(): void {
+    this.init();
+    this.profileService.getByUserIdRef().subscribe();
+  }
+
+  init() {
     this.organizeService.getAll().subscribe(res => {
       this.organizes = res.data;
     });
   }
 
-  gotoMap(data: { lat: number; lng: number }) {
-    window.open(`https://www.google.com/maps/search/?api=1&query=${data.lat},${data.lng}`, '_blank');
+  onEdit(data: IOrganize) {
+    this.organizeEditModal.toggle(true, data);
   }
 
   onShowDetail(org: IOrganize) {
