@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { AuthenticationService } from 'src/app/demo/service/authentication.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { AuthenticationService } from 'src/app/demo/service/authentication.servi
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+  isLoading: boolean = false;
   form: FormGroup = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
@@ -16,8 +18,8 @@ export class RegisterComponent {
   });
 
   userTypes: { name: string; value: string }[] = [
-    { name: 'ผู้จัดงาน', value: 'ORGANIZER' },
-    { name: 'นักวิ่ง', value: 'APPLICANT' },
+    { name: 'ผู้จัดงาน', value: 'host' },
+    { name: 'นักวิ่ง', value: 'participant' },
   ];
 
   constructor(
@@ -26,13 +28,17 @@ export class RegisterComponent {
   ) {}
 
   onSubmit() {
+    this.isLoading = true;
     const data = {
       username: this.form.value.username,
       password: this.form.value.password,
-      type: this.form.value.type.value ?? 'APPLICANT',
+      userType: this.form.value.type.value ?? 'participant',
     };
-    this.authService.register(data).subscribe(() => {
-      this.router.navigate(['auth', 'login']);
-    });
+    this.authService
+      .register(data)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(() => {
+        this.router.navigate(['auth', 'login']);
+      });
   }
 }

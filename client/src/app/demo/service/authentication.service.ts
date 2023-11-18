@@ -18,12 +18,10 @@ export class AuthenticationService {
   }
 
   login(data: { username: string; password: string }) {
-    // return this.http.post('login', data);
-    return of(data);
+    return this.http.post('/auth/signin', data);
   }
 
   register(data: any) {
-    // return this.http.post('login', data);
-    return of(data);
+    return this.http.post('/auth/signup', data);
   }
 }

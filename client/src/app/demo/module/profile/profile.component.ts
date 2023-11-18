@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ProfileService } from '../../service/profile.service';
+import { AuthenticationService } from '../../service/authentication.service';
+import { mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   loading: boolean = false;
   profileForm: FormGroup = new FormGroup({
     firstName: new FormControl('', Validators.required),
@@ -16,8 +19,27 @@ export class ProfileComponent {
     address: new FormControl('', Validators.required),
     phone: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
-    type: new FormControl({ value: '', disabled: true }, Validators.required),
+    disease: new FormControl('', Validators.required),
+    foodAllergies: new FormControl('', Validators.required),
+    type: new FormControl({ value: 'host', disabled: true }, Validators.required),
   });
 
-  onSubmit() {}
+  genders: string[] = ['ชาย', 'หญิง', 'อื่น ๆ'];
+
+  constructor(
+    private profileService: ProfileService,
+    private authService: AuthenticationService
+  ) {}
+
+  ngOnInit(): void {
+    this.authService.user$.pipe(
+      mergeMap(user => {
+        return this.profileService.getByUserIdRef(user.userId);
+      })
+    ).subscribe();
+  }
+
+  onSubmit() {
+    console.log(this.profileForm.value);
+  }
 }

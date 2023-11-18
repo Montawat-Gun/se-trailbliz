@@ -21,7 +21,7 @@ export class OrganizeComponent {
 
   ngOnInit(): void {
     this.organizeService.getAll().subscribe(res => {
-      this.organizes = res;
+      this.organizes = res.data;
     });
   }
 

@@ -27,11 +27,12 @@ export class LoginComponent {
   constructor(
     public layoutService: LayoutService,
     private authService: AuthenticationService,
-    private router: Router,
+    private router: Router
   ) {}
 
   onSubmit() {
-    this.authService.login(this.loginForm.value).subscribe(_ => {});
-    this.router.navigate(['']);
+    this.authService.login(this.loginForm.value).subscribe(_ => {
+      this.router.navigate(['']);
+    });
   }
 }
